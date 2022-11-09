@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Marathon Launcher
+GenericName=Marathon Launcher
+Categories=Game;
+Exec=marathon-launcher
+Icon=marathon_128.png
+StartupWMClass=Marathon Launcher
+Hidden=false
+NoDisplay=false
+Terminal=false
