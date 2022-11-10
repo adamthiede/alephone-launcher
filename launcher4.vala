@@ -1,46 +1,94 @@
-public class Launcher : Gtk.Application {
+int main (string[] argv) {
+    // Create a new application
+    var app = new Gtk.Application ("com.elagost.alephone-launcher",
+                                   GLib.ApplicationFlags.FLAGS_NONE);
 
-    public Launcher () {
-        Object (
-            application_id: "com.gitlab.elagost.alephone-marathon-installer",
-            flags: ApplicationFlags.FLAGS_NONE
-        );
-    }
-
-    protected override void activate () {
-        var main_window = new Gtk.ApplicationWindow (this);
-        main_window.default_height = 200;
-        main_window.default_width = 300;
-        main_window.title = "Marathon Launcher";
-        main_window.border_width=10;
-        main_window.window_position=Gtk.WindowPosition.CENTER;
-        main_window.destroy.connect (Gtk.main_quit);
-        var box = new Gtk.Box (Gtk.Orientation.VERTICAL,0);
-		//if you're just running it from the build dir, uncomment line 21 otherwise the icon won't show.
-		var image = new Gtk.Image.from_file ("/usr/share/icons/hicolor/128x128/apps/marathon_128.png");
-		//image = new Gtk.Image.from_file ("marathon_128.png");
-        main_window.add (box);
-        box.add (image);
+    app.activate.connect (() => {
+		var release="20220115";
         string command_out="";
         string command_err="";
         int command_status=0;
+
+        var main_window = new Gtk.ApplicationWindow (app);
+        main_window.default_height = 200;
+        main_window.default_width = 300;
+        main_window.title = "Marathon Launcher";
+
+        var box = new Gtk.Box (Gtk.Orientation.VERTICAL,0);
+		var image = new Gtk.Image ();
+		var imgfile = File.new_for_path ("/usr/share/icons/hicolor/128x128/apps/marathon_128.png");
+    	if (imgfile.query_exists ()) {
+			image = new Gtk.Image.from_file  ("/usr/share/icons/hicolor/128x128/apps/marathon_128.png");
+    	}
+		else {
+			image = new Gtk.Image.from_file ("marathon_128.png");
+		}
+
+		image.set_pixel_size(128);
+        main_window.set_child (box);
+        box.append (image);
         
         var textZone = new Gtk.Label ("");
-		textZone.margin = 1;
-
+        var button_test = new Gtk.Button.with_label ("Download/Play Marathon");
         var button_0 = new Gtk.Button.with_label ("Download Files (~100MB)");
 
-/*
-        var dir1s="~/.local/share/marathon/Marathon/";
-        var dir2s="~/.local/share/marathon/Marathon2/";
-        var dir3s="~/.local/share/marathon/MarathonInfinity/";
+		string gamedir=".local/share/AlephOne/";
+		var home_dir=File.new_for_path(Environment.get_home_dir());
+		var gamedir_f=home_dir.get_child(".local").get_child("share").get_child("AlephOne");
+		gamedir_f.make_directory();
+		
+		// the first button
+		button_test.clicked.connect(() => {
+			string url1="https://github.com/Aleph-One-Marathon/alephone/releases/download/release-"+release+"/Marathon-"+release+"-Data.zip";
+			string zip1=".local/share/AlephOne/Marathon.zip";
+			var filezip1=gamedir_f.get_child("Marathon.zip");
+			var filedir1=gamedir_f.get_child("Marathon");
+			var fileurl1= File.new_for_uri(url1);
 
-        if (GLib.Path.get_dirname) {
-            button_0.label =  ("Download Files (~100MB) (already downloaded)");
-        }
-        */
+			// if gamedata dir exists, run game
+			if (filedir1.query_file_type(0) == FileType.DIRECTORY){
+				try{
+					Process.spawn_command_line_sync ("alephone "+dir1);
+					textZone.label=command_out+"\n"+command_err+"\n";
+					button_test.sensitive = true;
+				}
+				catch (SpawnError e) {
+					textZone.label=e.message+"\n"+command_out+"\n";
+					stdout.printf ("Error: %s\n", e.message);
+				}
+			}
+			// if gamedata dir does not exist, but file does
+			else if (filezip1.query_exists()) {
+				try{
+					Process.spawn_command_line_sync ("unzip "+zip1+" -d "+gamedir);
+					textZone.label=command_out+"\n"+command_err+"\n";
+					button_test.sensitive = true;
+				}
+				catch (SpawnError e) {
+					textZone.label=e.message+"\n"+command_out+"\n";
+					stdout.printf ("Error: %s\n", e.message);
+				}
+			}
+			else {
+				string cmd="wget "+url1+" -O "+zip1;
+				try{
+					Process.spawn_command_line_sync (cmd);
+					Process.spawn_command_line_sync ("unzip "+zip1+" -d "+gamedir);
+					textZone.label=command_out+"\n"+command_err+"\n";
+					button_test.label="Downloaded! Click to play.";
+					button_test.sensitive = true;
+				}
+				catch (SpawnError e) {
+					textZone.label=e.message+"\n"+command_out+"\n";
+					stdout.printf ("Error: %s\n", e.message);
+				}
+			}
 
-		button_0.margin = 1;
+		});
+
+		//
+		// these are the old buttons!
+		//
 		button_0.clicked.connect (() => {
 		    button_0.label = "Downloading game files - launcher may freeze";
 		    button_0.sensitive = false;
@@ -57,7 +105,6 @@ public class Launcher : Gtk.Application {
 		});
 
         var button_1 = new Gtk.Button.with_label ("Marathon");
-		button_1.margin = 1;
 		button_1.clicked.connect (() => {
 		    try{
 				Process.spawn_command_line_sync ("sh -c \"alephone ~/.local/share/marathon/Marathon\"", out command_out);
@@ -68,7 +115,6 @@ public class Launcher : Gtk.Application {
 		});
 
 		var button_2 = new Gtk.Button.with_label ("Marathon 2");
-		button_2.margin = 1;
 		button_2.clicked.connect (() => {
 		    try{
 				Process.spawn_command_line_sync ("sh -c \"alephone ~/.local/share/marathon/Marathon2\"", out command_out);
@@ -79,7 +125,6 @@ public class Launcher : Gtk.Application {
 		});
 
 		var button_3 = new Gtk.Button.with_label ("Marathon Infinity");
-		button_3.margin = 1;
 		button_3.clicked.connect (() => {
 		    try{
 				Process.spawn_command_line_sync ("sh -c \"alephone ~/.local/share/marathon/MarathonInfinity\"", out command_out);
@@ -90,16 +135,13 @@ public class Launcher : Gtk.Application {
 		});
 		
 		//construct the box!
-		box.add (button_0);
-		box.add (button_1);
-		box.add (button_2);
-		box.add (button_3);
-		box.add (textZone);
-        main_window.show_all ();
-    }
-
-    public static int main (string[] args) {
-        var app = new Launcher ();
-        return app.run (args);
-    }
+		box.append (button_test);
+		box.append (button_0);
+		box.append (button_1);
+		box.append (button_2);
+		box.append (button_3);
+		box.append (textZone);
+        main_window.present ();
+    });
+    return app.run (argv);
 }
