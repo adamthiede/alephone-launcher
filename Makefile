@@ -20,14 +20,14 @@ install:
 	mkdir -p ${PREFIX}/bin
 	mkdir -p ${PREFIX}/share/applications
 	mkdir -p ${PREFIX}/share/icons/hicolor/128x128/apps/
-	install -m 0755 launcher ${PREFIX}/bin/marathon-launcher
-	install -m 0644 marathon-launcher.desktop ${PREFIX}/share/applications/
+	install -m 0755 alephone-launcher ${PREFIX}/bin/alephone-launcher
+	install -m 0644 alephone-launcher.desktop ${PREFIX}/share/applications/
 	install -m 0644 marathon_128.png ${PREFIX}/share/icons/hicolor/128x128/apps/
 	install -m 0644 marathon_128.png ${PREFIX}/share/icons/
 
 uninstall:
-	rm -f ${PREFIX}/bin/marathon-launcher
-	rm -f ${PREFIX}/share/applications/marathon-launcher.desktop
+	rm -f ${PREFIX}/bin/alephone-launcher
+	rm -f ${PREFIX}/share/applications/alephone-launcher.desktop
 	rm -f ${PREFIX}/share/icons/hicolor/128x128/apps/marathon_128.png
 	rm -f ${PREFIX}/share/doc/alephone-marathon-launcher
 

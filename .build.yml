@@ -1,0 +1,34 @@
+image: debian/stable
+packages:
+  - bash
+  - rsync
+  - podman
+  - flatpak
+  - elfutils
+  - coreutils
+  - slirp4netns
+  - rootlesskit
+  - binfmt-support
+  - fuse-overlayfs
+  - flatpak-builder
+  - qemu-user-static
+sources:
+  - https://git.sr.ht/~elagost/alephone-launcher
+environment:
+  VERSION: ""
+secrets:
+  - 07d27e19-a690-46d1-9f0a-4d391f5968b8
+  - 07e0c486-ee68-4149-a12e-fa082897aefc
+  - 09e35114-22ff-4920-af6a-093f59d18af3
+tasks:
+  - install-flatpak-deps: |
+      sudo mkdir -p /opt/pakrepo
+      sudo chown build /opt/pakrepo
+      sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+      sudo flatpak install --noninteractive --arch=aarch64 flathub org.gnome.Sdk//43 org.gnome.Platofrm//43 org.freedesktop.Platform//22.08 org.freedesktop.Sdk//22.08 -y
+  - build-flatpak: |
+      cd alephone-launcher
+      flatpak-builder --arch=aarch64 --gpg-sign=FBEF43DC8C6BE9A7 --repo=/opt/pakrepo --force-clean .builddir flatpak.yml
+  - deploy: |
+    #rsync -azu --delete /opt/pakrepo/ server:/var/www/htdocs/elagost.com/flatpak/repo_dice/
+

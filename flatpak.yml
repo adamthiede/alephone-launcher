@@ -1,0 +1,23 @@
+app-id: com.elagost.alephone-launcher
+runtime: org.gnome.Platform
+runtime-version: '43'
+sdk: org.gnome.Sdk
+command: launcher
+separate-locales: false
+rename-desktop-file: alephone-launcher.desktop
+finish-args:
+  - --socket=x11
+  - --socket=wayland
+  - --socket=session-bus
+  
+modules:
+  - name: alephone-launcher-gui
+    buildsystem: simple
+    build-commands:
+      - tar xf alephone-launcher.tar.gz
+      - cd alephone-launcher-2.0 && make && PREFIX="${FLATPAK_DEST}/" make install
+    sources:
+      - type: file
+        dest-filename: alephone-launcher.tar.gz
+        url: https://git.sr.ht/~elagost/alephone-launcher/archive/2.0.tar.gz
+        sha256: ???
