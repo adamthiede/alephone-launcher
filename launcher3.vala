@@ -1,15 +1,21 @@
-int main (string[] argv) {
-    // Create a new application
-    var app = new Gtk.Application ("com.elagost.alephone-launcher",
-                                   GLib.ApplicationFlags.FLAGS_NONE);
+public class Launcher : Gtk.Application {
 
-    app.activate.connect (() => {
+    public Launcher () {
+        Object (
+            application_id: "com.gitlab.elagost.alephone-marathon-installer",
+            flags: ApplicationFlags.FLAGS_NONE
+        );
+    }
+
+    protected override void activate () {
+
+
 
 		var release="20220115";
         string command_out="";
         string command_err="";
 
-        var main_window = new Gtk.ApplicationWindow (app);
+        var main_window = new Gtk.ApplicationWindow (this);
         main_window.default_height = 200;
         main_window.default_width = 300;
         main_window.title = "Marathon Launcher";
@@ -28,8 +34,8 @@ int main (string[] argv) {
 		image.set_pixel_size(128);
 
 
-        main_window.set_child (box);
-        box.append (image);
+        main_window.add (box);
+        box.add(image);
         var textZone = new Gtk.Label ("");
         
 		// create the buttons, initially say "not downloaded"
@@ -116,11 +122,16 @@ int main (string[] argv) {
 		}
 		
 		//construct the box!
-		box.append (button_m1);
-		box.append (button_m2);
-		box.append (button_m3);
-		box.append (textZone);
-        main_window.present ();
-    });
-    return app.run (argv);
+		box.add (button_m1);
+		box.add (button_m2);
+		box.add (button_m3);
+		box.add (textZone);
+        main_window.show_all();
+
+    }
+
+    public static int main (string[] args) {
+        var app = new Launcher ();
+        return app.run (args);
+    }
 }
