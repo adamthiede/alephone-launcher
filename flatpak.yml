@@ -2,7 +2,7 @@ app-id: com.elagost.alephone-launcher
 runtime: org.gnome.Platform
 runtime-version: '43'
 sdk: org.gnome.Sdk
-command: launcher
+command: alephone-launcher
 separate-locales: false
 rename-desktop-file: alephone-launcher.desktop
 finish-args:
@@ -20,4 +20,4 @@ modules:
       - type: file
         dest-filename: alephone-launcher.tar.gz
         url: https://git.sr.ht/~elagost/alephone-launcher/archive/2.0.tar.gz
-        sha256: ???
+        sha256: 034faf4b4f967f7f0c0a9bc58c0c3dae8be2a87f40ab0434377123ff762c7494
