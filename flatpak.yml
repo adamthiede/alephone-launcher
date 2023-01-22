@@ -16,6 +16,7 @@ modules:
   - shared/mad.yml
   - shared/zzip.yml
   - shared/miniupnpc.yml
+  - shared/SDL2_net.json
   - shared/alephone.yml
   - name: alephone-launcher-gui
     buildsystem: simple
