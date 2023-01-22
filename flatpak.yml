@@ -6,9 +6,17 @@ command: alephone-launcher
 separate-locales: false
 rename-desktop-file: alephone-launcher.desktop
 finish-args:
+  # for displaying a GUI
   - --socket=x11
   - --socket=wayland
   - --socket=session-bus
+  # for downloading files
+  - --share=network
+  - --filesystem=home
+  # for running the game
+  - --filesystem=xdg-run/pipewire-0
+  - --device=dri
+  - --socket=pulseaudio
   
 modules:
   - shared/boost.yml
