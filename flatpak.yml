@@ -11,6 +11,12 @@ finish-args:
   - --socket=session-bus
   
 modules:
+  - shared/boost.yml
+  - shared/glu.yml
+  - shared/mad.yml
+  - shared/zzip.yml
+  - shared/miniupnpc.yml
+  - shared/alephone.yml
   - name: alephone-launcher-gui
     buildsystem: simple
     build-commands:

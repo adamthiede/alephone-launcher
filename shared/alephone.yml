@@ -1,0 +1,23 @@
+name: alephone
+# buildsystem: autotools
+config-opts:
+  - --with-boost-libdir=/app/lib
+  - --with-sdl_image
+  - --with-ffmpeg
+  - --with-mad
+  - --with-sndfile
+  - --with-vorbis
+  # Disabled for now. SMPEG 2 isn't compatible, and 1.x isn't trivial to build since it's ancient.
+  # - --with-smpeg
+  - --with-speex
+  - --with-alsa
+  - --with-curl
+  - --with-zzip
+  - --with-png
+  - --with-miniupnpc
+sources:
+  - type: archive
+    url: https://github.com/Aleph-One-Marathon/alephone/releases/download/release-20230119/AlephOne-20230119.tar.bz2
+    sha256: ac2f517d652896c2a3286b096868f43da3be2781cd17f81085de7a5daa5c3026
+# TODO is there any point including icons/man/mime when it's not a standalone engine build?
+cleanup: [/lib/debug, /share/icons, /share/man, /share/mime]
