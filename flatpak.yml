@@ -22,9 +22,9 @@ modules:
     buildsystem: simple
     build-commands:
       - tar xf alephone-launcher.tar.gz
-      - cd alephone-launcher-2.0 && make && PREFIX="${FLATPAK_DEST}/" make install
+      - cd alephone-launcher-2.1 && make && PREFIX="${FLATPAK_DEST}/" make install
     sources:
       - type: file
         dest-filename: alephone-launcher.tar.gz
-        url: https://git.sr.ht/~elagost/alephone-launcher/archive/2.0.tar.gz
-        sha256: 034faf4b4f967f7f0c0a9bc58c0c3dae8be2a87f40ab0434377123ff762c7494
+        url: https://git.sr.ht/~elagost/alephone-launcher/archive/2.1.tar.gz
+        sha256: 61d489f1535e5c5aac8cd2ed1cae130981827e1bdcd549de472ed59877e40803
