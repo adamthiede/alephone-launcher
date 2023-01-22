@@ -1,11 +1,11 @@
 [Desktop Entry]
 Type=Application
-Name=Marathon Launcher
-GenericName=Marathon Launcher
+Name=Aleph One Marathon Launcher
+GenericName=Aleph One Marathon Launcher
 Categories=Game;
-Exec=marathon-launcher
+Exec=alephone-launcher
 Icon=marathon_128.png
-StartupWMClass=Marathon Launcher
+StartupWMClass=Aleph One Marathon Launcher
 Hidden=false
 NoDisplay=false
 Terminal=false
