@@ -41,6 +41,7 @@ int main (string[] argv) {
         var button_m1 = new Gtk.Button.with_label ("Marathon "+m1status);
         var button_m2 = new Gtk.Button.with_label ("Marathon 2 "+m2status);
         var button_m3 = new Gtk.Button.with_label ("Marathon Infinity "+m3status);
+        var button_clean = new Gtk.Button.with_label ("Delete Data Files");
 
 		// create ~/.local/share/AlephOne
 		var home_dir=File.new_for_path(Environment.get_home_dir());
@@ -118,12 +119,25 @@ int main (string[] argv) {
 
 		}
 		
+		button_clean.clicked.connect(() => {
+			try{
+				Process.spawn_command_line_sync ("rm -rf '"+gamedir.get_path()+"'");
+				textZone.label="Game data deleted; please relaunch launcher";
+			}
+
+			catch (SpawnError e) {
+				textZone.label=e.message+"\n"+command_out+"\n";
+				stdout.printf ("Error: %s\n", e.message);
+			}
+		});
+
 		//construct the box!
 		box.append (upstreamLink);
 		box.append (srcLink);
 		box.append (button_m1);
 		box.append (button_m2);
 		box.append (button_m3);
+		box.append (button_clean);
 		box.append (textZone);
         main_window.present ();
     });
