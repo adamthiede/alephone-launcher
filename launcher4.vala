@@ -1,11 +1,11 @@
 int main (string[] argv) {
     // Create a new application
     var app = new Gtk.Application ("com.elagost.alephone-launcher",
-                                   GLib.ApplicationFlags.FLAGS_NONE);
+                                   GLib.ApplicationFlags.SEND_ENVIRONMENT);
 
     app.activate.connect (() => {
 
-		var release="20220115";
+		var release="20230119";
         string command_out="";
         string command_err="";
 
@@ -30,6 +30,8 @@ int main (string[] argv) {
 
         main_window.set_child (box);
         box.append (image);
+        var upstreamLink = new Gtk.LinkButton.with_label ("https://alephone.lhowon.org/","Aleph One Project");
+        var srcLink = new Gtk.LinkButton.with_label ("https://git.sr.ht/~elagost/alephone-launcher","Launcher Source");
         var textZone = new Gtk.Label ("");
         
 		// create the buttons, initially say "not downloaded"
@@ -80,6 +82,7 @@ int main (string[] argv) {
 				mbtns.index(i).label=gameTitles[i]+" - Play";
 			}
 			mbtns.index(i).clicked.connect(() => {
+				var mbtn=mbtns.index(i);
 				// if the game data exists, play
 				if (mydir.query_file_type(0) == FileType.DIRECTORY){
 					try{
@@ -102,13 +105,13 @@ int main (string[] argv) {
 						Process.spawn_command_line_sync (wcmd);
 						Process.spawn_command_line_sync (zcmd);
 						textZone.label=command_out+"\n"+command_err+"\n";
-						mbtns.index(i).sensitive = true;
+						mbtn.sensitive = true;
 					}
 					catch (SpawnError e) {
 						textZone.label=e.message+"\n"+command_out+"\n";
 						stdout.printf ("Error: %s\n", e.message);
 					}
-					mbtns.index(i).label=gameTitles[i]+" - Play!";
+					mbtn.label=gameTitles[i]+" - Play";
 				}
 
 			});
@@ -116,6 +119,8 @@ int main (string[] argv) {
 		}
 		
 		//construct the box!
+		box.append (upstreamLink);
+		box.append (srcLink);
 		box.append (button_m1);
 		box.append (button_m2);
 		box.append (button_m3);

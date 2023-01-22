@@ -8,14 +8,14 @@ The launcher is a program written in Vala. It will download and unzip the marath
 
 To compile, you need the vala compiler installed, and GTK dev libraries for either gtk3 or gtk4, depending on which version you're building.
 
-###Build dependencies:
+### Build dependencies:
 
 - gtk4 or gtk3 dev libraries
 - vala compiler
 
-###Runtime dependencies:
+### Runtime dependencies:
 
-- gtk4 or gtk4
+- gtk4 or gtk3
 - unzip
 - wget
 
